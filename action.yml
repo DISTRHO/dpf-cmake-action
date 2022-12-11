@@ -96,7 +96,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/PawPawBuilds
-        key: pawpaw-${{ inputs.target }}-v${{ env.PAWPAW_CACHE_VERSION }}-${{ env.WITH_LTO }}
+        key: pawpaw-${{ inputs.target }}-v${{ env.PAWPAW_CACHE_VERSION }}-${{ inputs.lto }}
 
     # setup dependencies
     - name: Setup dependencies (linux-arm64)

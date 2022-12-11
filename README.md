@@ -71,7 +71,7 @@ The table below contains all possible properties for use with `distrho/dpf-cmake
 | Property | Required? | Description                                                |
 | -------- | --------- | ---------------------------------------------------------- |
 | target   | Yes       | The target platform and architecture to build for          |
-| lto      | No        | Whether to enable Link-Time-Optimizations, defaults to yes |
+| lto      | No        | Whether to enable Link-Time-Optimizations, defaults to no  |
 | dpf_path | No        | Where DPF is located within your repo, defaults to "./dpf" |
 | pawpaw   | No        | Whether to use [PawPaw](https://github.com/DISTRHO/PawPaw/) to install and setup extra libraries, defaults to no |
 | release  | No        | Whether to automatically upload releases, defaults to yes  |
