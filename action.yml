@@ -109,7 +109,7 @@ runs:
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-aarch64-linux-gnu libasound2-dev:arm64 libdbus-1-dev:arm64 libgl1-mesa-dev:arm64 liblo-dev:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
+        sudo apt-get install -yqq g++-aarch64-linux-gnu libasound2-dev:arm64 libdbus-1-dev:arm64 libgl1-mesa-dev:arm64 libglib2.0-dev:arm64 liblo-dev:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-armhf)
       if: ${{ inputs.target == 'linux-armhf' }}
@@ -121,7 +121,7 @@ runs:
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-arm-linux-gnueabihf libasound2-dev:armhf libdbus-1-dev:armhf libgl1-mesa-dev:armhf liblo-dev:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
+        sudo apt-get install -yqq g++-arm-linux-gnueabihf libasound2-dev:armhf libdbus-1-dev:armhf libgl1-mesa-dev:armhf libglib2.0-dev:armhf liblo-dev:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-i686)
       if: ${{ inputs.target == 'linux-i386' || inputs.target == 'linux-i686' }}
@@ -129,7 +129,7 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-i686-linux-gnu libasound2-dev:i386 libdbus-1-dev:i386 libgl1-mesa-dev:i386 liblo-dev:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
+        sudo apt-get install -yqq g++-i686-linux-gnu libasound2-dev:i386 libdbus-1-dev:i386 libgl1-mesa-dev:i386 libglib2.0-dev:i386 liblo-dev:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
         sudo apt-get clean
     - name: Setup dependencies (linux-riscv64)
       if: ${{ inputs.target == 'linux-riscv64' }}
@@ -141,14 +141,14 @@ runs:
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-riscv64-linux-gnu libasound2-dev:riscv64 libdbus-1-dev:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
+        sudo apt-get install -yqq g++-riscv64-linux-gnu libasound2-dev:riscv64 libdbus-1-dev:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglib2.0-dev:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-x86_64)
       if: ${{ inputs.target == 'linux-x86_64' || inputs.target == 'linux' }}
       shell: bash
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
+        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev libglib2.0-dev liblo-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
         sudo apt-get clean
     - name: Setup dependencies (win32)
       if: ${{ inputs.target == 'win32' }}
@@ -174,7 +174,7 @@ runs:
         sudo dpkg -i kxstudio-repos_11.1.0_all.deb
         sudo apt-get update -qq
         # build-deps
-        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libpulse-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
+        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev libglib2.0-dev liblo-dev libpulse-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
         # runtime testing
         sudo apt-get install -yqq carla-git lilv-utils lv2-dev lv2lint kxstudio-lv2-extensions mod-lv2-extensions valgrind xvfb
         # cleanup
