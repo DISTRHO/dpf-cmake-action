@@ -72,6 +72,8 @@ The table below contains all possible properties for use with `distrho/dpf-cmake
 | -------- | --------- | ---------------------------------------------------------- |
 | target   | Yes       | The target platform and architecture to build for          |
 | dpf_path | No        | Where DPF is located within your repo, defaults to "./dpf" |
+| pawpaw   | No        | Whether to use [PawPaw](https://github.com/DISTRHO/PawPaw/) to install and setup extra libraries |
+| release  | No        | Whether to automatically upload releases, defaults to yes  |
 
 The table below contains all possible targets and supported runners.
 
@@ -98,5 +100,4 @@ Initial release
 
 ## Future Plans
 
-- Integrate with [PawPaw](https://github.com/DISTRHO/PawPaw/) to allow plugins to use many opensource libs seamlessly
 - Set up MOD Audio builds
