@@ -7,6 +7,10 @@ inputs:
     description: 'Target OS'
     required: true
     default: 'linux'
+  lto:
+    description: 'Enable Link-Time-Optimizations'
+    required: false
+    default: false
   dpf_path:
     description: 'Relative path to DPF submodule'
     required: false
@@ -71,6 +75,14 @@ runs:
     - name: Setup build options
       shell: bash
       run: |
+        # cmake extra args
+        CMAKE_EXTRA_ARGS=""
+        [[ "${{ inputs.lto }}" = "true" ]] && CMAKE_EXTRA_ARGS+=" -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON"
+        echo "CMAKE_EXTRA_ARGS=${CMAKE_EXTRA_ARGS}" >> $GITHUB_ENV
+        # pawpaw lto
+        PAWPAW_SKIP_LTO=1
+        [[ "${{ inputs.lto }}" = "true" ]] && PAWPAW_SKIP_LTO=0
+        echo "PAWPAW_SKIP_LTO=${PAWPAW_SKIP_LTO}" >> $GITHUB_ENV
         # pawpaw target
         PAWPAW_TARGET="${{ inputs.target }}"
         [[ "${PAWPAW_TARGET}" = "linux" || "${PAWPAW_TARGET}" = "pluginval" || "${PAWPAW_TARGET}" = "plugin-validation" ]] && PAWPAW_TARGET=linux-x86_64
@@ -97,7 +109,7 @@ runs:
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-aarch64-linux-gnu libasound2-dev:arm64 libcairo2-dev:arm64 libdbus-1-dev:arm64 libgl1-mesa-dev:arm64 liblo-dev:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
+        sudo apt-get install -yqq g++-aarch64-linux-gnu libasound2-dev:arm64 libdbus-1-dev:arm64 libgl1-mesa-dev:arm64 liblo-dev:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-armhf)
       if: ${{ inputs.target == 'linux-armhf' }}
@@ -109,7 +121,7 @@ runs:
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-arm-linux-gnueabihf libasound2-dev:armhf libcairo2-dev:armhf libdbus-1-dev:armhf libgl1-mesa-dev:armhf liblo-dev:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
+        sudo apt-get install -yqq g++-arm-linux-gnueabihf libasound2-dev:armhf libdbus-1-dev:armhf libgl1-mesa-dev:armhf liblo-dev:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-i686)
       if: ${{ inputs.target == 'linux-i386' || inputs.target == 'linux-i686' }}
@@ -117,7 +129,7 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-i686-linux-gnu libasound2-dev:i386 libcairo2-dev:i386 libdbus-1-dev:i386 libgl1-mesa-dev:i386 liblo-dev:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
+        sudo apt-get install -yqq g++-i686-linux-gnu libasound2-dev:i386 libdbus-1-dev:i386 libgl1-mesa-dev:i386 liblo-dev:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
         sudo apt-get clean
     - name: Setup dependencies (linux-riscv64)
       if: ${{ inputs.target == 'linux-riscv64' }}
@@ -129,14 +141,14 @@ runs:
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-riscv64-linux-gnu libasound2-dev:riscv64 libcairo2-dev:riscv64 libdbus-1-dev:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
+        sudo apt-get install -yqq g++-riscv64-linux-gnu libasound2-dev:riscv64 libdbus-1-dev:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-x86_64)
       if: ${{ inputs.target == 'linux-x86_64' || inputs.target == 'linux' }}
       shell: bash
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -yqq libasound2-dev libcairo2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
+        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
         sudo apt-get clean
     - name: Setup dependencies (win32)
       if: ${{ inputs.target == 'win32' }}
@@ -162,7 +174,7 @@ runs:
         sudo dpkg -i kxstudio-repos_11.1.0_all.deb
         sudo apt-get update -qq
         # build-deps
-        sudo apt-get install -yqq libasound2-dev libcairo2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libpulse-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
+        sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev liblo-dev libpulse-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
         # runtime testing
         sudo apt-get install -yqq carla-git lilv-utils lv2-dev lv2lint kxstudio-lv2-extensions mod-lv2-extensions valgrind xvfb
         # cleanup
@@ -189,7 +201,7 @@ runs:
         PKG_CONFIG_PATH: /usr/lib/aarch64-linux-gnu/pkgconfig
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_AR=/usr/bin/aarch64-linux-gnu-ar \
@@ -210,7 +222,7 @@ runs:
         PKG_CONFIG_PATH: /usr/lib/arm-linux-gnueabihf/pkgconfig
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_AR=/usr/bin/arm-linux-gnueabihf-ar \
@@ -233,7 +245,7 @@ runs:
         PKG_CONFIG_PATH: /usr/lib/i386-linux-gnu/pkgconfig
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_AR=/usr/bin/i686-linux-gnu-ar \
@@ -254,7 +266,7 @@ runs:
         PKG_CONFIG_PATH: /usr/lib/riscv64-linux-gnu/pkgconfig
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_AR=/usr/bin/riscv64-linux-gnu-ar \
@@ -272,7 +284,7 @@ runs:
         LDFLAGS: -static-libgcc -static-libstdc++
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release .
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} .
         make -j $(nproc)
     - name: Build macOS intel
       if: ${{ inputs.target == 'macos-intel' }}
@@ -283,7 +295,10 @@ runs:
         LDFLAGS: -arch x86_64 -mmacosx-version-min=10.8 -stdlib=libc++
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES='x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET='10.8' -DCMAKE_OSX_SYSROOT="macosx" .
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_OSX_ARCHITECTURES='x86_64' \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET='10.8' \
+            -DCMAKE_OSX_SYSROOT="macosx" .
         make -j $(sysctl -n hw.logicalcpu)
         ${{ inputs.dpf_path }}/utils/package-osx-bundles.sh
     - name: Build macOS universal
@@ -295,7 +310,10 @@ runs:
         LDFLAGS: -arch x86_64 -arch arm64 -mmacosx-version-min=10.12
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET='10.12' -DCMAKE_OSX_SYSROOT="macosx" .
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET='10.12' \
+            -DCMAKE_OSX_SYSROOT="macosx" .
         make -j $(sysctl -n hw.logicalcpu)
         ${{ inputs.dpf_path }}/utils/package-osx-bundles.sh
     - name: Build win32 cross-compiled
@@ -309,7 +327,7 @@ runs:
         WINEDEBUG: "-all"
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_CROSSCOMPILING_EMULATOR=wine \
             -DCMAKE_SYSTEM_NAME=Windows \
@@ -333,7 +351,7 @@ runs:
         WINEDEBUG: "-all"
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_CROSSCOMPILING_EMULATOR=wine \
             -DCMAKE_SYSTEM_NAME=Windows \
@@ -356,7 +374,7 @@ runs:
         PAWPAW_SKIP_STRIPPING: 1
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
+        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ${{ env.CMAKE_EXTRA_ARGS }} .
         make -j $(nproc)
 
     # pluginval
