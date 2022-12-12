@@ -150,6 +150,11 @@ runs:
         sudo apt-get update -qq
         sudo apt-get install -yqq libasound2-dev libdbus-1-dev libgl1-mesa-dev libglib2.0-dev liblo-dev libx11-dev libxcursor-dev libxext-dev libxrandr-dev gperf
         sudo apt-get clean
+    - name: Setup dependencies (macOS)
+      if: ${{ startsWith(inputs.target, 'macos') }}
+      shell: bash
+      run: |
+        brew uninstall ant cairo harfbuzz kotlin maven openjdk r sbt selenium-server
     - name: Setup dependencies (win32)
       if: ${{ inputs.target == 'win32' }}
       shell: bash
