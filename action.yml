@@ -215,6 +215,11 @@ runs:
             -DCMAKE_RANLIB=/usr/bin/aarch64-linux-gnu-ranlib \
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/aarch64-linux-gnu-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/aarch64-linux-gnu-ranlib \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=aarch64 .
         make -j $(nproc)
     - name: Build linux armhf cross-compiled
@@ -236,6 +241,11 @@ runs:
             -DCMAKE_RANLIB=/usr/bin/arm-linux-gnueabihf-ranlib \
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/arm-linux-gnueabihf-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/arm-linux-gnueabihf-ranlib \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=armv7a .
         make -j $(nproc)
     - name: Build linux i686
@@ -259,6 +269,11 @@ runs:
             -DCMAKE_RANLIB=/usr/bin/i686-linux-gnu-ranlib \
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/i686-linux-gnu-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/i686-linux-gnu-ranlib \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=i386 .
         make -j $(nproc)
     - name: Build linux riscv64 cross-compiled
@@ -280,6 +295,11 @@ runs:
             -DCMAKE_RANLIB=/usr/bin/riscv64-linux-gnu-ranlib \
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/riscv64-linux-gnu-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/riscv64-linux-gnu-ranlib \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=riscv64 .
         make -j $(nproc)
     - name: Build linux x86_64
@@ -289,7 +309,13 @@ runs:
         LDFLAGS: -static-libgcc -static-libstdc++
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} .
+        cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
+            .
         make -j $(nproc)
     - name: Build macOS intel
       if: ${{ inputs.target == 'macos-intel' }}
@@ -316,6 +342,11 @@ runs:
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
             -DCMAKE_OSX_DEPLOYMENT_TARGET='10.12' \
             -DCMAKE_OSX_SYSROOT="macosx" .
@@ -331,6 +362,11 @@ runs:
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
             -DCMAKE_OSX_DEPLOYMENT_TARGET='10.15' \
             -DCMAKE_OSX_SYSROOT="macosx" .
@@ -358,6 +394,11 @@ runs:
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/i686-w64-mingw32-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/i686-w64-mingw32-ranlib \
             -DCMAKE_RC_COMPILER=/usr/bin/i686-w64-mingw32-windres \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=x86 .
         make -j $(nproc)
     - name: Build win64 cross-compiled
@@ -382,6 +423,11 @@ runs:
             -DCMAKE_C_COMPILER_RANLIB=/usr/bin/x86_64-w64-mingw32-ranlib \
             -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/x86_64-w64-mingw32-ranlib \
             -DCMAKE_RC_COMPILER=/usr/bin/x86_64-w64-mingw32-windres \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
             -DDPF_VST3_ARCHITECTURE=x86_64 .
         make -j $(nproc)
     - name: Build plugins
@@ -394,7 +440,13 @@ runs:
         PAWPAW_SKIP_STRIPPING: 1
       run: |
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
-        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ${{ env.CMAKE_EXTRA_ARGS }} .
+        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ${{ env.CMAKE_EXTRA_ARGS }} \
+            -DCMAKE_C_FLAGS="${CFLAGS}" \
+            -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+            -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+            -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
+            .
         make -j $(nproc)
 
     # pluginval
