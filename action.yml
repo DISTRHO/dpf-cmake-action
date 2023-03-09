@@ -43,7 +43,7 @@ runs:
         echo "HOMEBREW_NO_INSTALL_CLEANUP=1" >> $GITHUB_ENV
         echo "LIBGL_ALWAYS_SOFTWARE=true" >> $GITHUB_ENV
         echo "PAWPAW_CACHE_VERSION=4" >> $GITHUB_ENV
-        echo "PAWPAW_COMMIT_HASH=1ac5aafe9a3be4eaa3fceb3531862478f15b784e" >> $GITHUB_ENV
+        echo "PAWPAW_COMMIT_HASH=a474a7170e27c50e62328e7e31d84ea5a3fe2fdb" >> $GITHUB_ENV
         echo "PAWPAW_SKIP_GLIB=1" >> $GITHUB_ENV
         echo "PAWPAW_SKIP_LV2=1" >> $GITHUB_ENV
     - name: Fix GitHub's mess (detect version)
