@@ -209,6 +209,7 @@ runs:
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
             -DCMAKE_AR=/usr/bin/aarch64-linux-gnu-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/aarch64-linux-gnu-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/aarch64-linux-gnu-ar \
@@ -235,6 +236,7 @@ runs:
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=armv7 \
             -DCMAKE_AR=/usr/bin/arm-linux-gnueabihf-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/arm-linux-gnueabihf-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/arm-linux-gnueabihf-ar \
@@ -263,6 +265,7 @@ runs:
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=i386 \
             -DCMAKE_AR=/usr/bin/i686-linux-gnu-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/i686-linux-gnu-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/i686-linux-gnu-ar \
@@ -289,6 +292,7 @@ runs:
         cmake -DCMAKE_BUILD_TYPE=Release ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
             -DCMAKE_AR=/usr/bin/riscv64-linux-gnu-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/riscv64-linux-gnu-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/riscv64-linux-gnu-ar \
@@ -387,6 +391,7 @@ runs:
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_CROSSCOMPILING_EMULATOR=wine \
             -DCMAKE_SYSTEM_NAME=Windows \
+            -DCMAKE_SYSTEM_PROCESSOR=i686 \
             -DCMAKE_AR=/usr/bin/i686-w64-mingw32-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/i686-w64-mingw32-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/i686-w64-mingw32-ar \
@@ -416,6 +421,7 @@ runs:
             -DCMAKE_CROSSCOMPILING=ON \
             -DCMAKE_CROSSCOMPILING_EMULATOR=wine \
             -DCMAKE_SYSTEM_NAME=Windows \
+            -DCMAKE_SYSTEM_PROCESSOR=x86_64 \
             -DCMAKE_AR=/usr/bin/x86_64-w64-mingw32-ar \
             -DCMAKE_C_COMPILER_AR=/usr/bin/x86_64-w64-mingw32-ar \
             -DCMAKE_CXX_COMPILER_AR=/usr/bin/x86_64-w64-mingw32-ar \
