@@ -161,14 +161,14 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq binutils-mingw-w64-i686 g++-mingw-w64-i686 mingw-w64 gperf wine-stable:i386
+        sudo apt-get install -yqq binutils-mingw-w64-i686 g++-mingw-w64-i686 mingw-w64 gperf wine-stable:i386 xvfb
         sudo apt-get clean
     - name: Setup dependencies (win64)
       if: ${{ inputs.target == 'win64' }}
       shell: bash
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -yqq binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 mingw-w64 gperf wine-stable
+        sudo apt-get install -yqq binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 mingw-w64 gperf wine-stable xvfb
         sudo apt-get clean
     - name: Setup dependencies (pluginval)
       if: ${{ inputs.target == 'pluginval' || inputs.target == 'plugin-validation' }}
