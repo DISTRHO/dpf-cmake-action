@@ -167,6 +167,7 @@ runs:
       if: ${{ inputs.target == 'win64' }}
       shell: bash
       run: |
+        sudo dpkg --add-architecture i386
         sudo apt-get update -qq
         sudo apt-get install -yqq binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 mingw-w64 gperf wine-stable xvfb
         sudo apt-get clean
