@@ -580,7 +580,14 @@ runs:
       if: ${{ startsWith(inputs.target, 'macos') }}
       shell: bash
       run: |
-        cp *-macOS.pkg ${{ env.ARTIFACT_BASENAME }}.pkg
+        if [ "$(ls bin | grep '.app$' | wc -l)" -ge 1 ]; then
+          mkdir macos-pkg
+          mv bin/*.app macos-pkg/
+          mv *-macOS.pkg macos-pkg/${{ github.event.repository.name }}-AudioPlugins.pkg
+          hdiutil create ${{ env.ARTIFACT_BASENAME }}.dmg -srcfolder macos-pkg -volname ${{ env.ARTIFACT_BASENAME }} -fs HFS+ -ov
+        else
+          cp *-macOS.pkg ${{ env.ARTIFACT_BASENAME }}.pkg
+        fi
 
     # upload artifacts (action)
     - name: Upload artifacts (Linux)
@@ -596,14 +603,7 @@ runs:
       with:
         name: ${{ env.ARTIFACT_BASENAME }}
         path: |
-          ${{ env.ARTIFACT_BASENAME }}.pkg
-          bin/*
-          !bin/*-ladspa.dylib
-          !bin/*-dssi.dylib
-          !bin/lv2
-          !bin/vst2
-          !bin/vst3
-          !bin/clap
+          ${{ env.ARTIFACT_BASENAME }}.*
     - name: Upload artifacts (Windows)
       if: ${{ startsWith(inputs.target, 'win') }}
       uses: actions/upload-artifact@v3
@@ -627,8 +627,13 @@ runs:
       if: ${{ startsWith(inputs.target, 'macos') && startsWith(github.ref, 'refs/tags/') && inputs.release == 'true' }}
       shell: bash
       run: |
-        mv *-macOS.pkg ${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.pkg
-        echo RELEASE_FILENAME=${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.pkg >> $GITHUB_ENV
+        if [ -e ${{ env.ARTIFACT_BASENAME }}.dmg ]; then
+          mv ${{ env.ARTIFACT_BASENAME }}.dmg ${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.dmg
+          echo RELEASE_FILENAME=${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.dmg >> $GITHUB_ENV
+        else
+          mv ${{ env.ARTIFACT_BASENAME }}.pkg ${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.pkg
+          echo RELEASE_FILENAME=${{ env.RELEASE_BASENAME }}-${{ inputs.target }}.pkg >> $GITHUB_ENV
+        fi
     - name: Create release archive (Windows)
       if: ${{ startsWith(inputs.target, 'win') && startsWith(github.ref, 'refs/tags/') && inputs.release == 'true' }}
       shell: bash
