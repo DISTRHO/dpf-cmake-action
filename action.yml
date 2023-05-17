@@ -15,6 +15,10 @@ inputs:
     description: 'Relative path to DPF submodule'
     required: false
     default: 'dpf'
+  faust:
+    description: 'Install faust'
+    required: false
+    default: false
   pawpaw:
     description: 'Install and setup extra libraries'
     required: false
@@ -67,7 +71,6 @@ runs:
       run: |
         sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq --allow-downgrades libgd3/jammy
         sudo apt-get purge -yqq libclang* libgbm* libllvm* libmono* moby* mono* msbuild* php* libgdiplus libpcre2-posix3 libzip4
         sudo apt-get clean
 
@@ -109,7 +112,7 @@ runs:
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-aarch64-linux-gnu libasound2-dev:arm64 libdbus-1-dev:arm64 libgl1-mesa-dev:arm64 libglib2.0-dev:arm64 liblo-dev:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
+        sudo apt-get install -yqq --allow-downgrades g++-aarch64-linux-gnu libasound2-dev:arm64 libatomic1:arm64 libc6:arm64 libdbus-1-dev:arm64 libgcc-s1:arm64 libgl1-mesa-dev:arm64 libglib2.0-dev:arm64 liblo-dev:arm64 libstdc++6:arm64 libx11-dev:arm64 libxcursor-dev:arm64 libxext-dev:arm64 libxrandr-dev:arm64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-armhf)
       if: ${{ inputs.target == 'linux-armhf' }}
@@ -121,7 +124,7 @@ runs:
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-arm-linux-gnueabihf libasound2-dev:armhf libdbus-1-dev:armhf libgl1-mesa-dev:armhf libglib2.0-dev:armhf liblo-dev:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
+        sudo apt-get install -yqq --allow-downgrades g++-arm-linux-gnueabihf libasound2-dev:armhf libatomic1:armhf libc6:armhf libdbus-1-dev:armhf libgcc-s1:armhf libgl1-mesa-dev:armhf libglib2.0-dev:armhf liblo-dev:armhf libstdc++6:armhf libx11-dev:armhf libxcursor-dev:armhf libxext-dev:armhf libxrandr-dev:armhf gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-i686)
       if: ${{ inputs.target == 'linux-i386' || inputs.target == 'linux-i686' }}
@@ -129,7 +132,7 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-i686-linux-gnu libasound2-dev:i386 libdbus-1-dev:i386 libgl1-mesa-dev:i386 libglib2.0-dev:i386 liblo-dev:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
+        sudo apt-get install --allow-downgrades g++-i686-linux-gnu libasound2-dev:i386 libatomic1:i386 libc6:i386 libdbus-1-dev:i386 libgcc-s1:i386 libgl1-mesa-dev:i386 libglib2.0-dev:i386 liblo-dev:i386 libstdc++6:i386 libx11-dev:i386 libxcursor-dev:i386 libxext-dev:i386 libxrandr-dev:i386 gperf
         sudo apt-get clean
     - name: Setup dependencies (linux-riscv64)
       if: ${{ inputs.target == 'linux-riscv64' }}
@@ -141,7 +144,7 @@ runs:
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         echo "deb [arch=riscv64] http://ports.ubuntu.com/ubuntu-ports ${{ env.UBUNTU_CODENAME }}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-riscv64.list
         sudo apt-get update -qq
-        sudo apt-get install -yqq g++-riscv64-linux-gnu libasound2-dev:riscv64 libdbus-1-dev:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglib2.0-dev:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
+        sudo apt-get install -yqq --allow-downgrades g++-riscv64-linux-gnu libasound2-dev:riscv64 libatomic1:riscv64 libc6:riscv64 libdbus-1-dev:riscv64 libgcc-s1:riscv64 libgl1-mesa-dev:riscv64 libglapi-mesa:riscv64 libglib2.0-dev:riscv64 libglvnd0:riscv64 liblo-dev:riscv64 libstdc++6:riscv64 libx11-dev:riscv64 libxcursor-dev:riscv64 libxext-dev:riscv64 libxrandr-dev:riscv64 gperf qemu-user-static
         sudo apt-get clean
     - name: Setup dependencies (linux-x86_64)
       if: ${{ inputs.target == 'linux-x86_64' || inputs.target == 'linux' }}
@@ -161,7 +164,7 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq binutils-mingw-w64-i686 g++-mingw-w64-i686 mingw-w64 gperf wine-stable:i386 xvfb
+        sudo apt-get install -yqq --allow-downgrades binutils-mingw-w64-i686 g++-mingw-w64-i686 libc6:i386 libgcc-s1:i386 libstdc++6:i386 mingw-w64 gperf wine-stable:i386 xvfb
         sudo apt-get clean
     - name: Setup dependencies (win64)
       if: ${{ inputs.target == 'win64' }}
@@ -169,7 +172,7 @@ runs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -qq
-        sudo apt-get install -yqq binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 mingw-w64 gperf wine-stable xvfb
+        sudo apt-get install -yqq --allow-downgrades binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 libc6:i386 libgcc-s1:i386 libstdc++6:i386 mingw-w64 gperf wine-stable xvfb
         sudo apt-get clean
     - name: Setup dependencies (pluginval)
       if: ${{ inputs.target == 'pluginval' || inputs.target == 'plugin-validation' }}
@@ -185,6 +188,31 @@ runs:
         sudo apt-get install -yqq carla-git lilv-utils lv2-dev lv2lint kxstudio-lv2-extensions mod-lv2-extensions valgrind xvfb
         # cleanup
         sudo apt-get clean
+
+    # install faust (optional)
+    - name: Cache faust debs
+      if: ${{ inputs.faust == 'true' && runner.os == 'Linux' }}
+      uses: actions/cache@v3
+      with:
+        path: ~/faustdebs
+        key: faustdebs
+    - name: Install faust (non-macOS)
+      if: ${{ inputs.faust == 'true' && runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -yqq libllvm10 libmicrohttpd12 libsndfile1
+        mkdir -p ~/faustdebs
+        wget -c -P ~/faustdebs \
+          https://launchpad.net/~kxstudio-debian/+archive/ubuntu/toolchain/+files/faust_2.41.1~ds0-0_amd64.deb \
+          https://launchpad.net/~kxstudio-debian/+archive/ubuntu/toolchain/+files/faust-common_2.41.1~ds0-0_all.deb \
+          https://launchpad.net/~kxstudio-debian/+archive/ubuntu/toolchain/+files/libfaust2_2.41.1~ds0-0_amd64.deb
+        sudo dpkg -i ~/faustdebs/*.deb
+    - name: Install faust (macOS)
+      if: ${{ inputs.faust == 'true' && startsWith(inputs.target, 'macos') }}
+      shell: bash
+      run: |
+        brew install faust
 
     # build dependencies
     - name: Build dependencies through PawPaw
