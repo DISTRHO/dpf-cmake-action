@@ -286,6 +286,7 @@ runs:
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
         cmake ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
+            -DCMAKE_CROSSCOMPILING_EMULATOR=qemu-aarch64-static \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
             -DCMAKE_AR=/usr/bin/aarch64-linux-gnu-ar \
@@ -313,6 +314,7 @@ runs:
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
         cmake ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
+            -DCMAKE_CROSSCOMPILING_EMULATOR=qemu-arm-static \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_SYSTEM_PROCESSOR=armv7 \
             -DCMAKE_AR=/usr/bin/arm-linux-gnueabihf-ar \
@@ -369,6 +371,7 @@ runs:
         ${{ inputs.pawpaw == 'true' }} && pushd PawPaw && source local.env ${{ env.PAWPAW_TARGET }} && popd
         cmake ${{ env.CMAKE_EXTRA_ARGS }} \
             -DCMAKE_CROSSCOMPILING=ON \
+            -DCMAKE_CROSSCOMPILING_EMULATOR=qemu-riscv64-static \
             -DCMAKE_SYSTEM_NAME=Linux \
             -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
             -DCMAKE_AR=/usr/bin/riscv64-linux-gnu-ar \
